@@ -10,12 +10,12 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-@EnableWebSecurity
+@EnableWebSecurity 
 public class BasicSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	private @Autowired UserDetailsServiceImpl service;
 
-	@Override
+	@Override // permite especificar que um método sobrescreve outro método da superclasse.
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(service);
 		

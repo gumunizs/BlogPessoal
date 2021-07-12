@@ -18,15 +18,19 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.org.generation.blogpessoalg.model.Postagem;
 import br.org.generation.blogpessoalg.repository.PostagemRepository;
+import br.org.generation.blogpessoalg.service.PostagemService;
 
 
 @RestController
 @RequestMapping("/postagens")
-@CrossOrigin("*")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class PostagemController {
 	
 	@Autowired
 	private PostagemRepository repository;
+	
+	@Autowired
+	private PostagemService postagemService;
 	
 	@GetMapping // ("/postagens")
 	public ResponseEntity<List<Postagem>>GetAll() {
@@ -60,4 +64,24 @@ public class PostagemController {
 		public void deletePostagem (@PathVariable long id) {
 			repository.deleteById(id);
 		}
+
+			@PutMapping("/curtir/{id}")
+			public ResponseEntity<Postagem> putCurtirPostagemId (@PathVariable Long id){
+	
+				return ResponseEntity.status(HttpStatus.OK).body(postagemService.curtir(id));
+
+			}
+
+			/**
+			 * 
+			 * Descurtir postagem
+			 * 
+			 */
+
+			@PutMapping("/descurtir/{id}")
+			public ResponseEntity<Postagem> putDescurtirPostagemId (@PathVariable Long id){
+	
+				return ResponseEntity.status(HttpStatus.OK).body(postagemService.descurtir(id));
+
 	}
+}
