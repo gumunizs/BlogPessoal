@@ -28,8 +28,8 @@ public class Postagem {
 	@Size(min = 5, max = 100, message =  "Entre 5 e 100 caracteres")
 	private String titulo;
 	
-	@NotNull(message =  "Entre 5 e 100 caracteres")
-	@Size(min = 20, max = 500, message =  "Entre 20 e 500 caracteres")
+	@NotNull(message =  "Entre 1 e 1000 caracteres")
+	@Size(min = 1, max = 1000, message =  "Entre 1 e 1000 caracteres")
 	private String texto;
 	
 	@Temporal(TemporalType.TIMESTAMP)

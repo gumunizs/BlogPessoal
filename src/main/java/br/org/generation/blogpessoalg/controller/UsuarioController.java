@@ -4,8 +4,6 @@ package br.org.generation.blogpessoalg.controller;
 import java.util.List;
 import java.util.Optional;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.org.generation.blogpessoalg.model.UsuarioLogin;
 import br.org.generation.blogpessoalg.model.Usuario;
+import br.org.generation.blogpessoalg.model.UsuarioLogin;
 import br.org.generation.blogpessoalg.repository.UsuarioRepository;
 import br.org.generation.blogpessoalg.service.UsuarioService;
 
@@ -52,14 +50,14 @@ public class UsuarioController {
 	}
 
 	@PostMapping("/cadastrar")
-	public ResponseEntity<Usuario> postUsuario(@Valid @RequestBody Usuario usuario) {
-		Optional<Usuario> novoUsuario = usuarioService.cadastrarUsuario(usuario);
-		try {
-				return ResponseEntity.ok(novoUsuario.get());
-		} catch (Exception e) {
-			return ResponseEntity.badRequest().build();
-		}
-		
+	public ResponseEntity <Usuario> Post(@RequestBody Usuario usuario) {
+	
+		Usuario usuarioResp = usuarioService.cadastrarUsuario(usuario);
+	try {
+		return ResponseEntity.status(HttpStatus.CREATED).body(usuarioResp);
+	} catch (Exception e) {
+		return ResponseEntity.badRequest().build();
+	}
 	}
 	
 	@PutMapping("/alterar")

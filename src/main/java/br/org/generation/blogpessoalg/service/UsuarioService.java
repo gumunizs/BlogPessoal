@@ -2,8 +2,6 @@ package br.org.generation.blogpessoalg.service;
 
 
 import java.nio.charset.Charset;
-import java.time.LocalDate;
-import java.time.Period;
 import java.util.Optional;
 
 import org.apache.commons.codec.binary.Base64;
@@ -24,37 +22,22 @@ public class UsuarioService {
 	@Autowired
 	private UsuarioRepository usuarioRepository;
 
-public Optional<Usuario> cadastrarUsuario(Usuario usuario) {
-	
-		// Verifica se o usuário (email) existe
+public Usuario cadastrarUsuario(Usuario usuario) {
+		
 		if(usuarioRepository.findByUsuario(usuario.getUsuario()).isPresent())
 			throw new ResponseStatusException(
-			          	HttpStatus.BAD_REQUEST, "Usuário já existe!", null);
-
-		// Verifica se o usuário é maior de idade
-		int idade = Period.between(usuario.getDataNascimento(), LocalDate.now()).getYears();
-		
-		if(idade < 18)
-			throw new ResponseStatusException(
-						HttpStatus.BAD_REQUEST, "Usuário menor de 18 anos", null);
-			
+					HttpStatus.BAD_REQUEST, "Usuário já existe!", null);
+				
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
 		String senhaEncoder = encoder.encode(usuario.getSenha());
 		usuario.setSenha(senhaEncoder);
 
-		return Optional.of(usuarioRepository.save(usuario));
-	}
+		return usuarioRepository.save(usuario);
+}
 
 	public Optional<Usuario> atualizarUsuario(Usuario usuario){
 	
-		if(usuarioRepository.findById(usuario.getId()).isPresent()) {
-		
-			int idade = Period.between(usuario.getDataNascimento(), LocalDate.now()).getYears();
-			
-			if(idade < 18)
-				throw new ResponseStatusException(
-							HttpStatus.BAD_REQUEST, "Usuário menor de 18 anos", null);
 			
 			BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 			
@@ -63,12 +46,6 @@ public Optional<Usuario> cadastrarUsuario(Usuario usuario) {
 			
 			return Optional.of(usuarioRepository.save(usuario));
 		
-		}else {
-			
-			throw new ResponseStatusException(
-					HttpStatus.NOT_FOUND, "Usuário não encontrado!", null);
-			
-		}
 		
 	}
 	
